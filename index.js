@@ -36,22 +36,30 @@ for (const file of eventFiles) {
 	}
 }
 
+const wait = require('node:timers/promises').setTimeout
+
 client.on(Events.InteractionCreate, async interaction => {
     if (!interaction.isChatInputCommand()) return;
 
-    const command = interaction.client.commands.get(interaction.commandName)
-
-    if (!command) {
-        console.error(`No command matching ${interaction.commandName} was found.`)
-        return
+    if (interaction.commandName === 'ping') {
+        await interaction.reply({ content: 'Secret Pong!', ephemeral: true })
+        await wait(2000)
+        await interaction.editReply('Pong again!')
     }
 
-    try {
-        await command.execute(interaction)
-    } catch (error) {
-        console.error(error)
-        await interaction.reply({content: 'There was an error while executing this command!', ephemeral: true })
-    }
+    // const command = interaction.client.commands.get(interaction.commandName)
+
+    // if (!command) {
+    //     console.error(`No command matching ${interaction.commandName} was found.`)
+    //     return
+    // }
+
+    // try {
+    //     await command.execute(interaction)
+    // } catch (error) {
+    //     console.error(error)
+    //     await interaction.reply({content: 'There was an error while executing this command!', ephemeral: true })
+    // }
 })
 
 // Log in to Discord with your client's token
